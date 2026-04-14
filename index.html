@@ -11,460 +11,440 @@
 
   body {
     font-family: 'Noto Sans Tamil', sans-serif;
-    background: #f0f0f0;
+    background: radial-gradient(ellipse at center, #1a0e04 0%, #080402 100%);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
-    padding: 20px;
+    padding: 30px 20px;
   }
 
+  /* ═══════════════════════════════════════
+     POSTER SHELL
+  ═══════════════════════════════════════ */
   .poster {
     width: 600px;
-    min-height: 900px;
     background: linear-gradient(180deg,
-      #fffbea 0%,
-      #fdf5d0 20%,
-      #f5e8b0 40%,
-      #e8d890 55%,
-      #d4c878 65%,
-      #c8b860 75%,
-      #b8a850 85%,
-      #a89840 100%
+      #fffbea 0%, #fdf5d0 20%, #f5e8b0 40%,
+      #e8d890 55%, #d4c878 65%, #c8b860 75%,
+      #b8a850 85%, #a89840 100%
     );
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-    padding: 0 0 30px 0;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.65);
+    padding-bottom: 32px;
+    animation: posterReveal 0.9s cubic-bezier(0.16,1,0.3,1) both,
+               borderGlow 5s ease-in-out 1.5s infinite;
+  }
+  @keyframes posterReveal {
+    from { opacity:0; transform:scale(0.93) translateY(36px); }
+    to   { opacity:1; transform:scale(1)    translateY(0); }
+  }
+  @keyframes borderGlow {
+    0%,100% { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,200,80,0.25); }
+    50%      { box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 0 3px rgba(255,190,50,0.55), 0 0 50px rgba(255,160,30,0.18); }
   }
 
-  /* Warm golden overlay */
+  /* Warm radial overlay */
   .poster::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 45%,
-      rgba(255,220,100,0.25) 0%,
-      rgba(200,160,60,0.15) 60%,
-      rgba(120,80,20,0.1) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse at 50% 42%,
+      rgba(255,220,100,0.22) 0%, rgba(200,160,60,0.12) 60%, transparent 100%);
+    pointer-events:none; z-index:1;
   }
 
-  /* Village/nature background illustration using CSS */
-  .bg-scene {
-    position: absolute;
-    bottom: 120px;
-    left: 0; right: 0;
-    height: 280px;
-    z-index: 0;
-    overflow: hidden;
+  /* ═══════════════════════════════════════
+     SPARKLE PARTICLES
+  ═══════════════════════════════════════ */
+  #sparkles {
+    position:absolute; inset:0;
+    pointer-events:none; z-index:25; overflow:hidden;
+  }
+  .spark {
+    position:absolute;
+    border-radius:50%;
+    opacity:0;
+    animation: floatSpark linear infinite;
+  }
+  @keyframes floatSpark {
+    0%   { opacity:0;   transform:translateY(0)    scale(0);   }
+    12%  { opacity:0.9; transform:translateY(-18px) scale(1);   }
+    80%  { opacity:0.4; }
+    100% { opacity:0;   transform:translateY(-150px) scale(0.2); }
   }
 
-  /* Sky glow */
-  .sky-glow {
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 140px;
-    background: radial-gradient(ellipse, rgba(255,200,80,0.6) 0%, rgba(255,180,60,0.2) 50%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  /* Path */
-  .path {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 60px solid transparent;
-    border-right: 60px solid transparent;
-    border-bottom: 200px solid rgba(180,130,60,0.5);
-  }
-
-  /* Palm trees using CSS */
-  .palm {
-    position: absolute;
-    bottom: 0;
-  }
-  .palm-trunk {
-    width: 10px;
-    height: 120px;
-    background: linear-gradient(to top, #6b4226, #8b5e3c);
-    margin: 0 auto;
-    border-radius: 3px;
-  }
-  .palm-leaves {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-    line-height: 1;
-  }
-  .palm-left { left: 30px; }
-  .palm-right { right: 30px; }
-  .palm-mid-left { left: 90px; }
-  .palm-mid-right { right: 90px; }
-
-  /* Green grass */
-  .grass {
-    position: absolute;
-    bottom: 0;
-    left: 0; right: 0;
-    height: 50px;
-    background: linear-gradient(to top, #4a8c3f, #6ab840, transparent);
-    border-radius: 50% 50% 0 0 / 30px 30px 0 0;
-  }
-
-  /* Floral garland top */
+  /* ═══════════════════════════════════════
+     GARLAND
+  ═══════════════════════════════════════ */
   .garland {
-    width: 100%;
-    height: 60px;
-    background: linear-gradient(180deg, #2d5a1b 0%, #3d7a2b 40%, transparent 100%);
-    position: relative;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 0 10px;
-    flex-wrap: nowrap;
-    overflow: hidden;
+    width:100%;
+    background: linear-gradient(180deg, #2d5a1b 0%, #3d7a2b 55%, rgba(61,122,43,0) 100%);
+    padding: 10px 8px 22px;
+    position:relative; z-index:10;
+    display:flex; align-items:center; justify-content:center;
+    gap:5px; flex-wrap:nowrap; overflow:hidden;
+    animation: garlandDrop 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;
+  }
+  @keyframes garlandDrop {
+    from { transform:translateY(-110%); opacity:0; }
+    to   { transform:translateY(0);     opacity:1; }
   }
   .flower {
-    font-size: 22px;
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
-    animation: sway 3s ease-in-out infinite;
-    flex-shrink: 0;
+    font-size:22px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+    flex-shrink:0; display:inline-block;
+    transform-origin:top center;
+    animation: swayFlower ease-in-out infinite;
   }
-  .leaf-item {
-    font-size: 20px;
-    flex-shrink: 0;
+  @keyframes swayFlower {
+    0%,100% { transform:rotate(-9deg) scale(1);    }
+    50%      { transform:rotate(9deg)  scale(1.06); }
   }
-  @keyframes sway {
-    0%, 100% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
+  .leaf-item { font-size:20px; flex-shrink:0; }
+
+  /* ═══════════════════════════════════════
+     CORNER FLOWERS
+  ═══════════════════════════════════════ */
+  .corner-deco {
+    position:absolute; font-size:32px; z-index:15;
+    opacity:0;
+    animation: bloomIn 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  .corner-deco.tl { top:64px; left:10px;  animation-delay:1.0s; }
+  .corner-deco.tr { top:64px; right:10px; animation-delay:1.1s; }
+  @keyframes bloomIn {
+    from { opacity:0; transform:scale(0) rotate(-200deg); }
+    to   { opacity:0.85; transform:scale(1) rotate(0deg); }
+  }
+  /* after bloom → continuous gentle spin */
+  .corner-deco.active-tl { animation: cornerSwayL 6s ease-in-out infinite !important; opacity:0.85; }
+  .corner-deco.active-tr { animation: cornerSwayR 6s ease-in-out infinite !important; opacity:0.85; }
+  @keyframes cornerSwayL {
+    0%,100% { transform:rotate(-18deg) scale(1);    }
+    50%      { transform:rotate(8deg)   scale(1.1); }
+  }
+  @keyframes cornerSwayR {
+    0%,100% { transform:rotate(18deg)  scale(1);    }
+    50%      { transform:rotate(-8deg)  scale(1.1); }
   }
 
-  /* All text content */
-  .content {
-    position: relative;
-    z-index: 10;
-    padding: 0 28px;
-  }
+  /* ═══════════════════════════════════════
+     TITLE
+  ═══════════════════════════════════════ */
+  .content { position:relative; z-index:10; padding:0 28px; }
 
-  /* Main title */
-  .title-section {
-    text-align: center;
-    padding: 18px 0 12px;
-  }
+  .title-section { text-align:center; padding:18px 0 12px; }
+
   .title-small {
-    font-size: 20px;
-    color: #8b1a1a;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    font-size:20px; color:#8b1a1a; font-weight:600; letter-spacing:2px; margin-bottom:4px;
+    opacity:0;
+    animation: slideDown 0.6s ease 0.55s both;
   }
   .title-main {
-    font-size: 48px;
-    font-weight: 900;
-    color: #8b0000;
-    line-height: 1.15;
-    text-shadow: 2px 2px 4px rgba(139,0,0,0.2), 0 0 20px rgba(255,200,100,0.5);
-    letter-spacing: 1px;
+    font-size:48px; font-weight:900; color:#8b0000; line-height:1.15; letter-spacing:1px;
+    opacity:0;
+    animation: titleBlast 0.9s cubic-bezier(0.16,1,0.3,1) 0.72s both,
+               titleGlow  3.5s ease-in-out 1.8s infinite;
   }
   .title-sub {
-    font-size: 30px;
-    font-weight: 800;
-    color: #8b0000;
-    margin-top: 2px;
-    text-shadow: 1px 1px 3px rgba(139,0,0,0.2);
+    font-size:30px; font-weight:800; color:#8b0000; margin-top:2px;
+    text-shadow:1px 1px 3px rgba(139,0,0,0.2);
+    opacity:0;
+    animation: slideUp 0.6s ease 1.05s both;
+  }
+  @keyframes slideDown {
+    from { opacity:0; transform:translateY(-22px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes slideUp {
+    from { opacity:0; transform:translateY(22px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes titleBlast {
+    from { opacity:0; transform:scale(0.55); filter:blur(10px); }
+    to   { opacity:1; transform:scale(1);    filter:blur(0); }
+  }
+  @keyframes titleGlow {
+    0%,100% { text-shadow:3px 3px 0 rgba(139,0,0,0.15), 0 0 0px rgba(255,140,20,0); }
+    50%      { text-shadow:3px 3px 0 rgba(139,0,0,0.15), 0 0 50px rgba(255,140,20,0.45), 0 0 90px rgba(255,90,10,0.18); }
   }
 
-  /* Decorative divider */
+  /* ═══════════════════════════════════════
+     FLOURISH
+  ═══════════════════════════════════════ */
+  .flourish {
+    text-align:center; font-size:20px; color:#8b4513;
+    opacity:0; letter-spacing:4px; margin:2px 0;
+    animation: fadeIn 0.5s ease 1.15s both;
+  }
+  @keyframes fadeIn { from{opacity:0} to{opacity:0.75} }
+
+  /* ═══════════════════════════════════════
+     CLINIC BOX
+  ═══════════════════════════════════════ */
+  .clinic-from {
+    font-size:14px; color:#555; font-weight:600; margin-bottom:6px;
+    opacity:0; animation: fadeIn 0.5s ease 1.2s both;
+  }
+  .clinic-box {
+    background:rgba(255,255,255,0.88);
+    border:2.5px solid #1a5c1a;
+    border-radius:40px; padding:12px 24px; margin:10px 0 8px;
+    text-align:center; box-shadow:0 4px 15px rgba(0,80,0,0.15);
+    opacity:0;
+    animation: slideInLeft 0.7s cubic-bezier(0.16,1,0.3,1) 1.25s both,
+               clinicGlow  4s ease-in-out 2.2s infinite;
+    transition: transform 0.25s ease;
+  }
+  .clinic-box:hover { transform:scale(1.015); }
+  @keyframes slideInLeft {
+    from { opacity:0; transform:translateX(-45px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+  @keyframes clinicGlow {
+    0%,100% { box-shadow:0 4px 15px rgba(0,80,0,0.15); }
+    50%      { box-shadow:0 4px 32px rgba(0,160,0,0.32), 0 0 0 3px rgba(26,92,26,0.12); }
+  }
+  .clinic-name-row { display:flex; align-items:center; justify-content:center; gap:14px; }
+  .clinic-logo {
+    width:52px; height:52px;
+    background:linear-gradient(135deg,#1a5c1a,#2e8b2e);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:26px; box-shadow:0 3px 8px rgba(0,80,0,0.3); flex-shrink:0;
+    animation: logoSpin 1.0s cubic-bezier(0.34,1.56,0.64,1) 1.3s both;
+  }
+  @keyframes logoSpin {
+    from { transform:scale(0) rotate(-360deg); opacity:0; }
+    to   { transform:scale(1) rotate(0);       opacity:1; }
+  }
+  .clinic-name  { font-size:36px; font-weight:900; color:#1a5c1a; text-shadow:1px 1px 2px rgba(0,80,0,0.15); }
+  .clinic-tagline { font-size:13px; color:#555; font-weight:600; margin-top:6px; letter-spacing:0.5px; }
+
+  .location-badge {
+    background:#1a5c1a; color:white; border-radius:20px;
+    padding:6px 18px; font-size:13px; font-weight:600;
+    display:inline-flex; align-items:center; gap:6px;
+    margin:6px 0 14px; box-shadow:0 2px 8px rgba(0,80,0,0.25);
+    opacity:0;
+    animation: slideUp 0.6s ease 1.55s both;
+    transition: background 0.25s, box-shadow 0.25s;
+  }
+  .location-badge:hover { background:#246424; box-shadow:0 4px 18px rgba(0,80,0,0.4); }
+
+  /* ═══════════════════════════════════════
+     BACKGROUND SCENE
+  ═══════════════════════════════════════ */
+  .bg-scene {
+    position:absolute; bottom:120px; left:0; right:0;
+    height:280px; z-index:0; overflow:hidden;
+  }
+  .sky-glow {
+    position:absolute; top:0; left:50%;
+    transform:translateX(-50%);
+    width:200px; height:140px;
+    background:radial-gradient(ellipse,rgba(255,200,80,0.6) 0%,rgba(255,180,60,0.2) 50%,transparent 70%);
+    border-radius:50%;
+    animation: sunPulse 4s ease-in-out infinite;
+  }
+  @keyframes sunPulse {
+    0%,100% { width:200px; height:140px; opacity:0.8; }
+    50%      { width:250px; height:175px; opacity:1.0; }
+  }
+  .path {
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:0; height:0;
+    border-left:60px solid transparent;
+    border-right:60px solid transparent;
+    border-bottom:200px solid rgba(180,130,60,0.5);
+  }
+  .grass {
+    position:absolute; bottom:0; left:0; right:0; height:50px;
+    background:linear-gradient(to top,#4a8c3f,#6ab840,transparent);
+    border-radius:50% 50% 0 0/30px 30px 0 0;
+  }
+  .palm { position:absolute; bottom:0; transform-origin:bottom center; }
+  .palm-trunk {
+    width:10px; background:linear-gradient(to top,#6b4226,#8b5e3c);
+    margin:0 auto; border-radius:3px;
+  }
+  .palm-left      { left:30px;   animation:palmSway1 5.0s ease-in-out infinite; }
+  .palm-right     { right:30px;  animation:palmSway2 5.4s ease-in-out infinite; }
+  .palm-mid-left  { left:90px;   animation:palmSway2 6.0s ease-in-out infinite; }
+  .palm-mid-right { right:90px;  animation:palmSway1 5.7s ease-in-out infinite; }
+  @keyframes palmSway1 { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)}  }
+  @keyframes palmSway2 { 0%,100%{transform:rotate(5deg)}  50%{transform:rotate(-5deg)} }
+
+  .field-bg {
+    position:absolute; bottom:120px; left:0; right:0; height:160px;
+    background:linear-gradient(to top,rgba(60,130,40,0.35) 0%,rgba(80,160,50,0.2) 40%,transparent 100%);
+    z-index:2;
+  }
+  .huts {
+    position:absolute; bottom:160px; left:0; right:0;
+    display:flex; justify-content:space-around; padding:0 60px;
+    z-index:3; font-size:32px; opacity:0;
+    animation: hutsReveal 0.8s ease 0.5s both;
+  }
+  @keyframes hutsReveal {
+    from { opacity:0; transform:scale(0.75) translateY(20px); }
+    to   { opacity:0.65; transform:scale(1) translateY(0); }
+  }
+
+  /* scene spacer */
+  .scene-spacer { height:200px; }
+
+  /* ═══════════════════════════════════════
+     DIVIDER
+  ═══════════════════════════════════════ */
   .divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 6px 0;
-    color: #8b4513;
-    font-size: 18px;
+    display:flex; align-items:center; justify-content:center;
+    gap:10px; margin:6px 0; color:#8b4513; font-size:18px;
   }
   .divider-line {
-    flex: 1;
-    height: 1.5px;
-    background: linear-gradient(to right, transparent, #8b4513, transparent);
+    flex:1; height:1.5px;
+    background:linear-gradient(to right,transparent,#8b4513,transparent);
   }
 
-  /* Clinic box */
-  .clinic-box {
-    background: rgba(255,255,255,0.85);
-    border: 2.5px solid #1a5c1a;
-    border-radius: 40px;
-    padding: 12px 24px;
-    margin: 10px 0 8px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0,80,0,0.15);
-    backdrop-filter: blur(4px);
-  }
-  .clinic-from {
-    font-size: 14px;
-    color: #444;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .clinic-name-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-  }
-  .clinic-logo {
-    width: 52px;
-    height: 52px;
-    background: linear-gradient(135deg, #1a5c1a, #2e8b2e);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    box-shadow: 0 3px 8px rgba(0,80,0,0.3);
-    flex-shrink: 0;
-  }
-  .clinic-name {
-    font-size: 36px;
-    font-weight: 900;
-    color: #1a5c1a;
-    text-shadow: 1px 1px 2px rgba(0,80,0,0.15);
-  }
-  .clinic-tagline {
-    font-size: 13px;
-    color: #555;
-    font-weight: 600;
-    margin-top: 6px;
-    letter-spacing: 0.5px;
-  }
-
-  /* Location badge */
-  .location-badge {
-    background: #1a5c1a;
-    color: white;
-    border-radius: 20px;
-    padding: 6px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin: 6px 0 14px;
-    box-shadow: 0 2px 8px rgba(0,80,0,0.25);
-  }
-
-  /* Scene spacer */
-  .scene-spacer { height: 200px; }
-
-  /* Quotes section */
-  .quote-section {
-    margin: 10px 0;
-  }
+  /* ═══════════════════════════════════════
+     QUOTES
+  ═══════════════════════════════════════ */
+  .quote-section { margin:10px 0; }
 
   .quote-main {
-    background: rgba(255,255,255,0.72);
-    border-radius: 16px;
-    padding: 18px 20px;
-    margin-bottom: 14px;
-    border-left: 5px solid #8b0000;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.1);
-    backdrop-filter: blur(6px);
+    background:rgba(255,255,255,0.78);
+    border-radius:16px; padding:18px 20px; margin-bottom:14px;
+    border-left:5px solid #8b0000;
+    box-shadow:0 4px 18px rgba(0,0,0,0.10);
+    opacity:0;
+    animation: slideInRight 0.75s cubic-bezier(0.16,1,0.3,1) 1.9s both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .quote-main p {
-    font-size: 19px;
-    color: #222;
-    line-height: 1.7;
-    font-weight: 600;
+  .quote-main:hover { transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,0.15); }
+
+  @keyframes slideInRight {
+    from { opacity:0; transform:translateX(50px); }
+    to   { opacity:1; transform:translateX(0); }
   }
-  .quote-main p span {
-    color: #8b0000;
-    font-weight: 800;
-    font-size: 21px;
+  .quote-main p { font-size:19px; color:#222; line-height:1.7; font-weight:600; }
+  .quote-main p span { color:#8b0000; font-weight:800; font-size:21px; }
+  .quote-mark,.quote-mark-end {
+    font-size:36px; color:#8b0000;
+    line-height:0.5; vertical-align:-10px; font-weight:900;
   }
-  .quote-mark {
-    font-size: 36px;
-    color: #8b0000;
-    line-height: 0.5;
-    vertical-align: -10px;
-    margin-right: 4px;
-    font-weight: 900;
-  }
-  .quote-mark-end {
-    font-size: 36px;
-    color: #8b0000;
-    line-height: 0.5;
-    vertical-align: -10px;
-    margin-left: 2px;
-    font-weight: 900;
-  }
+  .quote-mark { margin-right:4px; }
+  .quote-mark-end { margin-left:2px; }
 
   .quote-secondary {
-    background: rgba(255,255,255,0.65);
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 14px;
-    border-left: 4px solid #1a5c1a;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    backdrop-filter: blur(5px);
+    background:rgba(255,255,255,0.70);
+    border-radius:14px; padding:14px 18px; margin-bottom:14px;
+    border-left:4px solid #1a5c1a;
+    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+    opacity:0;
+    animation: slideInLeft 0.75s cubic-bezier(0.16,1,0.3,1) 2.15s both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .quote-secondary p {
-    font-size: 16px;
-    color: #333;
-    line-height: 1.7;
-    font-weight: 500;
-  }
-  .quote-secondary .qm {
-    font-size: 28px;
-    color: #1a5c1a;
-    line-height: 0.5;
-    vertical-align: -8px;
-    font-weight: 900;
-  }
+  .quote-secondary:hover { transform:translateY(-4px); box-shadow:0 10px 26px rgba(0,0,0,0.12); }
+  .quote-secondary p { font-size:16px; color:#333; line-height:1.7; font-weight:500; }
+  .quote-secondary .qm { font-size:28px; color:#1a5c1a; line-height:0.5; vertical-align:-8px; font-weight:900; }
 
-  /* Green banner */
+  /* ═══════════════════════════════════════
+     GREEN BANNER
+  ═══════════════════════════════════════ */
   .green-banner {
-    background: #1a6e1a;
-    border-radius: 12px;
-    padding: 14px 20px;
-    text-align: center;
-    margin: 6px 0 16px;
-    box-shadow: 0 4px 16px rgba(0,80,0,0.3);
-    position: relative;
-    overflow: hidden;
+    background:linear-gradient(135deg,#1a6e1a,#2a9020,#1a6e1a);
+    border-radius:12px; padding:14px 20px;
+    text-align:center; margin:6px 0 16px;
+    box-shadow:0 4px 16px rgba(0,80,0,0.3);
+    position:relative; overflow:hidden;
+    opacity:0;
+    animation: bannerPop 0.85s cubic-bezier(0.34,1.56,0.64,1) 2.45s both;
   }
-  .green-banner::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -20px; right: -20px; bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='20'%3E%3Cpath d='M0 10 Q25 0 50 10 Q75 20 100 10' stroke='rgba(255,255,255,0.08)' fill='none' stroke-width='2'/%3E%3C/svg%3E") repeat-x center;
-    pointer-events: none;
+  @keyframes bannerPop {
+    from { opacity:0; transform:scale(0.8); }
+    to   { opacity:1; transform:scale(1); }
+  }
+  /* shimmer sweep */
+  .green-banner::after {
+    content:'';
+    position:absolute; top:0; left:-130%;
+    width:75%; height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);
+    transform:skewX(-18deg);
+    animation:shimmerSweep 3.2s ease-in-out 3s infinite;
+  }
+  @keyframes shimmerSweep {
+    0%   { left:-130%; }
+    100% { left:150%;  }
   }
   .green-banner p {
-    font-size: 22px;
-    font-weight: 800;
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 1;
+    font-size:22px; font-weight:800; color:#fff;
+    text-shadow:0 2px 6px rgba(0,0,0,0.3);
+    position:relative; z-index:1;
   }
 
-  /* Footer icons row */
+  /* ═══════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════ */
   .footer-icons {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 10px;
-    margin-bottom: 12px;
+    display:flex; justify-content:space-between;
+    align-items:flex-end; padding:0 10px; margin-bottom:12px;
   }
   .icon-item {
-    font-size: 44px;
-    text-align: center;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+    font-size:44px; text-align:center;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+    opacity:0;
+    animation: slideUp 0.5s ease 2.75s both;
   }
   .icon-medical {
-    font-size: 52px;
+    font-size:52px; opacity:0;
+    animation: slideUp 0.5s ease 2.85s both,
+               heartbeat 1.4s ease-in-out 3.4s infinite;
   }
-
-  /* Footer text */
+  @keyframes heartbeat {
+    0%,100% { transform:scale(1); }
+    14%      { transform:scale(1.14); }
+    28%      { transform:scale(1.0);  }
+    42%      { transform:scale(1.08); }
+    56%      { transform:scale(1.0);  }
+  }
   .footer-text {
-    text-align: center;
-    color: #8b0000;
-    font-size: 14px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 6px 0;
+    text-align:center; color:#8b0000; font-size:14px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; gap:8px; padding:6px 0;
+    opacity:0;
+    animation: fadeIn 0.5s ease 3.05s both;
   }
-  .heart { font-size: 16px; }
-
-  /* Decorative floral corners */
-  .corner-deco {
-    position: absolute;
-    font-size: 32px;
-    z-index: 15;
-    opacity: 0.7;
-  }
-  .corner-deco.tl { top: 62px; left: 10px; transform: rotate(-30deg); }
-  .corner-deco.tr { top: 62px; right: 10px; transform: rotate(30deg); }
-
-  /* Small flourishes */
-  .flourish {
-    text-align: center;
-    font-size: 20px;
-    color: #8b4513;
-    opacity: 0.7;
-    letter-spacing: 4px;
-    margin: 2px 0;
-  }
-
-  /* Subtle green fields behind scene */
-  .field-bg {
-    position: absolute;
-    bottom: 120px;
-    left: 0; right: 0;
-    height: 160px;
-    background: linear-gradient(to top,
-      rgba(60,130,40,0.35) 0%,
-      rgba(80,160,50,0.2) 40%,
-      transparent 100%
-    );
-    z-index: 2;
-  }
-
-  /* Huts */
-  .huts {
-    position: absolute;
-    bottom: 160px;
-    left: 0; right: 0;
-    display: flex;
-    justify-content: space-around;
-    padding: 0 60px;
-    z-index: 3;
-    font-size: 32px;
-    opacity: 0.6;
-  }
+  .heart { font-size:16px; display:inline-block; animation:heartbeat 1.4s ease-in-out 3.6s infinite; }
 </style>
 </head>
 <body>
 <div class="poster">
 
-  <!-- Floral garland top -->
+  <!-- Sparkle particles -->
+  <div id="sparkles"></div>
+
+  <!-- Garland -->
   <div class="garland">
     <span class="leaf-item">🌿</span>
-    <span class="flower">🌸</span>
-    <span class="flower">🌼</span>
-    <span class="flower">🌺</span>
-    <span class="flower">🌻</span>
-    <span class="flower">🌸</span>
-    <span class="flower">🌼</span>
-    <span class="flower">🌺</span>
-    <span class="flower">🌻</span>
-    <span class="flower">🌸</span>
-    <span class="flower">🌼</span>
-    <span class="flower">🌺</span>
-    <span class="flower">🌸</span>
+    <span class="flower" style="animation-duration:2.5s;animation-delay:0.00s">🌸</span>
+    <span class="flower" style="animation-duration:3.1s;animation-delay:0.20s">🌼</span>
+    <span class="flower" style="animation-duration:2.7s;animation-delay:0.40s">🌺</span>
+    <span class="flower" style="animation-duration:3.3s;animation-delay:0.10s">🌻</span>
+    <span class="flower" style="animation-duration:2.6s;animation-delay:0.30s">🌸</span>
+    <span class="flower" style="animation-duration:3.0s;animation-delay:0.50s">🌼</span>
+    <span class="flower" style="animation-duration:2.8s;animation-delay:0.15s">🌺</span>
+    <span class="flower" style="animation-duration:3.2s;animation-delay:0.35s">🌻</span>
+    <span class="flower" style="animation-duration:2.9s;animation-delay:0.05s">🌸</span>
+    <span class="flower" style="animation-duration:2.6s;animation-delay:0.45s">🌼</span>
+    <span class="flower" style="animation-duration:3.1s;animation-delay:0.25s">🌺</span>
+    <span class="flower" style="animation-duration:2.7s;animation-delay:0.55s">🌸</span>
     <span class="leaf-item">🌿</span>
   </div>
 
-  <!-- Corner decorations -->
-  <span class="corner-deco tl">🌺</span>
-  <span class="corner-deco tr">🌺</span>
+  <!-- Corner flowers -->
+  <span class="corner-deco tl" id="cTL">🌺</span>
+  <span class="corner-deco tr" id="cTR">🌺</span>
 
   <!-- Background scene -->
   <div class="bg-scene">
@@ -489,14 +469,10 @@
     </div>
   </div>
   <div class="field-bg"></div>
-  <div class="huts">
-    <span>🏡</span>
-    <span>🏡</span>
-  </div>
+  <div class="huts"><span>🏡</span><span>🏡</span></div>
 
-  <!-- Main Content -->
+  <!-- Content -->
   <div class="content">
-    <!-- Title -->
     <div class="title-section">
       <div class="title-small">இனிய</div>
       <div class="title-main">தமிழ் புத்தாண்டு</div>
@@ -505,9 +481,8 @@
 
     <div class="flourish">❧ ✦ ❧</div>
 
-    <!-- Clinic info -->
     <div style="text-align:center">
-      <div style="font-size:14px;color:#555;font-weight:600;margin-bottom:6px">அன்புடன் வழங்குவது</div>
+      <div class="clinic-from">அன்புடன் வழங்குவது</div>
       <div class="clinic-box">
         <div class="clinic-name-row">
           <div class="clinic-logo">⚕️</div>
@@ -520,10 +495,8 @@
       </div>
     </div>
 
-    <!-- Scene spacer -->
     <div class="scene-spacer"></div>
 
-    <!-- Quotes -->
     <div class="quote-section">
       <div class="quote-main">
         <p>
@@ -551,14 +524,12 @@
       </div>
     </div>
 
-    <!-- Footer icons -->
     <div class="footer-icons">
       <div class="icon-item">🪴🍌🌸</div>
       <div class="icon-item">📖</div>
       <div class="icon-medical">🩺❤️</div>
     </div>
 
-    <!-- Footer text -->
     <div class="footer-text">
       <span class="heart">❤️</span>
       உங்கள் நலனில் எங்கள் அக்கறை
@@ -566,5 +537,39 @@
     </div>
   </div>
 </div>
+
+<script>
+/* ── Sparkles ─────────────────────────────────────────── */
+const sparkContainer = document.getElementById('sparkles');
+const sparkColors = ['#ffe566','#ffd700','#ffb830','#fff09a','#ffa020','#ff8c40','#fffacd'];
+
+function spawnSpark() {
+  const el = document.createElement('div');
+  el.className = 'spark';
+  const sz = 3 + Math.random() * 5;
+  const col = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+  el.style.cssText = `
+    left:${5 + Math.random() * 90}%;
+    top:${25 + Math.random() * 68}%;
+    width:${sz}px; height:${sz}px;
+    background:radial-gradient(circle,${col},rgba(255,200,60,0));
+    box-shadow:0 0 ${sz*1.5}px ${col};
+    animation-duration:${3.5 + Math.random() * 4}s;
+    animation-delay:${Math.random() * 3}s;
+  `;
+  sparkContainer.appendChild(el);
+  setTimeout(() => el.remove(), 9000);
+}
+/* initial burst */
+for (let i = 0; i < 20; i++) setTimeout(spawnSpark, i * 300);
+/* steady trickle */
+setInterval(spawnSpark, 480);
+
+/* ── Corner flowers: bloom → sway ────────────────────── */
+setTimeout(() => {
+  document.getElementById('cTL').classList.add('active-tl');
+  document.getElementById('cTR').classList.add('active-tr');
+}, 1800);
+</script>
 </body>
 </html>
